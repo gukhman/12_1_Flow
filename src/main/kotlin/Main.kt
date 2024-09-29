@@ -21,21 +21,19 @@ fun getPersonsFlow(): Flow<Person> = flow {
 }
 
 fun getPhoneFlow(length: Int): Flow<String> = flow {
-    for (i in 1..length) {
-        val countryCode = "7"
-        val phoneStart = "917"
-        val phone = getRandomPhone(countryCode, phoneStart)
+    repeat(length) {
+        val phone = generateRandomPhone()
         emit(phone)
         delay(100)
     }
 }
 
-private fun getRandomPhone(countryCode: String, startWith: String): String {
-    val phoneLen = 11
-    val generateLen = phoneLen - (countryCode.length + startWith.length)
-    var end = ""
-    for (i in 1..generateLen) end += (0..9).random().toString()
-    return "+$countryCode$startWith$end"
+private fun generateRandomPhone(): String {
+    val countryCode = "7"
+    val phoneStart = "917"
+    //padStart используется для дополнения строки до определенной длины с использованием указанного символа
+    val randomEnd = (0..99999).random().toString().padStart(7, '0')
+    return "+$countryCode$phoneStart$randomEnd"
 }
 
 fun main() = runBlocking {
